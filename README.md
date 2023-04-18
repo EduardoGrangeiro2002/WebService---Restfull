@@ -28,6 +28,23 @@
 ### For more information about enpoints , access the file endpoints.
  * Download the endpoints file and import into insomnia to have access to all endpoints
 
+1. Add pilots and their ships to the system.
 
+2. Publish transport contracts
 
+3. Travel between planets
+Pilots can travel freely through the galaxy, respecting the limitations of the ship and blocked routes. See the travels section.
+
+4. List open contracts
+
+5. Accept transport contracts
+
+6. Grant credits to the pilot after fulfilling the contract
+The system must finish the contract when the pilot gets to the delivery destination. After that, the pilot receives the number of credits specified as value.
+
+7. Register a refill of the fuel
+You can register a refill when the ship is on any planet. A fuel unit costs 7 credits.
+
+8. Reports
+As a government system, they want to know what's going on. They required you to make some reports:
 
