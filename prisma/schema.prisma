@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Pilot {
+  idPilot Int @id @default(autoincrement()) @map("id_pilot")
+  pilotCertification String @db.VarChar(10) @unique @map("pilot_certification")
+  name String @db.VarChar(45) @unique
+  age Int 
+  credits Decimal
+  locationPlanet String @db.VarChar(65) @map("location_planet")
+  ships Ship[]
+  contracts Contract[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("pilot")
+}
+
+model Ship {
+  idShip Int @id @default(autoincrement()) @map("id_ship")
+  name String @db.VarChar(45) @unique
+  fuelCapacity Int @map("fuel_capacity")
+  fuelLevel Int @map("fuel_level")
+  weightCapacity Int
+  pilot Pilot? @relation(fields: [idPilot], references: [idPilot])
+  idPilot Int? @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("ship")
+}
+
+model Contract {
+  idContract Int @id @default(autoincrement()) @map("id_contract")
+  description String @db.VarChar(200) @unique
+  payload Decimal @db.Decimal(32,12)
+  originPlanet String @db.VarChar(45) @map("origin_planet")
+  destinationPlanet String @db.VarChar(45) @map("destination_planet")
+  pilot Pilot? @relation(fields: [idPilot], references: [idPilot])
+  idPilot Int? @map("id_pilot")
+  resource Resource[]
+  status Status @relation(fields: [idStatus], references: [idStatus])
+  idStatus Int @map("id_status")
+  value Decimal @db.Decimal(32,12)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("contract")
+}
+
+model Resource {
+  idResource Int @id @default(autoincrement()) @map("id_resource")
+  name String @db.VarChar(15)
+  weight Decimal @db.Decimal(32,12)
+  contract Contract @relation(fields: [idContract], references: [idContract])
+  idContract  Int  @map("id_contract")
+
+  @@map("resource")
+}
+
+model Status {
+  idStatus Int @id @default(autoincrement()) @map("id_status")
+  status String @db.VarChar(45)
+  contract Contract[]
+
+  @@map("status")
+}
+
+model Transaction {
+  idTransaction Int @id @default(autoincrement()) @map("id_transaction")
+  description String @db.VarChar(200)
+  value Decimal @db.Decimal(32,12)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("transaction")
+}
+
